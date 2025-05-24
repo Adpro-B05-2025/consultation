@@ -12,4 +12,5 @@ public interface ConsultationService {
     List<ConsultationResponseDto> getByDoctor(Long doctorId);
     ConsultationResponseDto updateStatus(Long id, String newStatus);
     void delete(Long id);
+    List<ConsultationResponseDto> getAll();
 }
