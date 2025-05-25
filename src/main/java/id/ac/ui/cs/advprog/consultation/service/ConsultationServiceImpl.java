@@ -34,28 +34,28 @@ public class ConsultationServiceImpl implements ConsultationService {
     @Override
     public ConsultationResponseDto getById(Long id) {
         Consultation c = repo.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
         return mapper.toDto(c);
     }
 
     @Override
     public List<ConsultationResponseDto> getByPatient(Long patientId) {
         return repo.findByPatientId(patientId).stream()
-                   .map(mapper::toDto)
-                   .collect(Collectors.toList());
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ConsultationResponseDto> getByDoctor(Long doctorId) {
         return repo.findByDoctorId(doctorId).stream()
-                   .map(mapper::toDto)
-                   .collect(Collectors.toList());
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ConsultationResponseDto updateStatus(Long id, String newStatus) {
         Consultation c = repo.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
 
         ConsultationStatus statusEnum;
         try {
@@ -72,7 +72,15 @@ public class ConsultationServiceImpl implements ConsultationService {
     @Override
     public void delete(Long id) {
         repo.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
         repo.deleteById(id);
+    }
+
+    @Override
+    public List<ConsultationResponseDto> getAll() {
+        List<Consultation> allConsultations = repo.findAll();
+        return allConsultations.stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
     }
 }
