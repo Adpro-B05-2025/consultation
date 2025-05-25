@@ -40,6 +40,9 @@ dependencies {
     // runtimeOnly("mysql:mysql-connector-java") // Jika pakai MySQL
     // runtimeOnly("org.postgresql:postgresql")  // Jika pakai PostgreSQL
 
+    // Async Support
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
     // MapStruct
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")

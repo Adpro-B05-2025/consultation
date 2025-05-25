@@ -9,10 +9,12 @@ import id.ac.ui.cs.advprog.consultation.exception.ResourceNotFoundException;
 import id.ac.ui.cs.advprog.consultation.mapper.ConsultationMapper;
 import id.ac.ui.cs.advprog.consultation.repository.ConsultationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,38 +24,45 @@ public class ConsultationServiceImpl implements ConsultationService {
     private final ConsultationRepository repo;
     private final ConsultationMapper mapper;
 
+    @Async("taskExecutor")
     @Override
-    public ConsultationResponseDto create(ConsultationRequestDto req) {
+    public CompletableFuture<ConsultationResponseDto> create(ConsultationRequestDto req) {
         Consultation cons = mapper.toEntity(req);
         cons.setRequestedAt(LocalDateTime.now());
         cons.setStatus(ConsultationStatus.PENDING);
         Consultation saved = repo.save(cons);
-        return mapper.toDto(saved);
+        return CompletableFuture.completedFuture(mapper.toDto(saved));
     }
 
+    @Async("taskExecutor")
     @Override
-    public ConsultationResponseDto getById(Long id) {
+    public CompletableFuture<ConsultationResponseDto> getById(Long id) {
         Consultation c = repo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
-        return mapper.toDto(c);
+        return CompletableFuture.completedFuture(mapper.toDto(c));
     }
 
+    @Async("taskExecutor")
     @Override
-    public List<ConsultationResponseDto> getByPatient(Long patientId) {
-        return repo.findByPatientId(patientId).stream()
+    public CompletableFuture<List<ConsultationResponseDto>> getByPatient(Long patientId) {
+        List<ConsultationResponseDto> consultations = repo.findByPatientId(patientId).stream()
                    .map(mapper::toDto)
                    .collect(Collectors.toList());
+        return CompletableFuture.completedFuture(consultations);
     }
 
+    @Async("taskExecutor")
     @Override
-    public List<ConsultationResponseDto> getByDoctor(Long doctorId) {
-        return repo.findByDoctorId(doctorId).stream()
+    public CompletableFuture<List<ConsultationResponseDto>> getByDoctor(Long doctorId) {
+        List<ConsultationResponseDto> consultations = repo.findByDoctorId(doctorId).stream()
                    .map(mapper::toDto)
                    .collect(Collectors.toList());
+        return CompletableFuture.completedFuture(consultations);
     }
 
+    @Async("taskExecutor")
     @Override
-    public ConsultationResponseDto updateStatus(Long id, String newStatus) {
+    public CompletableFuture<ConsultationResponseDto> updateStatus(Long id, String newStatus) {
         Consultation c = repo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
 
@@ -66,13 +75,15 @@ public class ConsultationServiceImpl implements ConsultationService {
 
         c.setStatus(statusEnum);
         Consultation updated = repo.save(c);
-        return mapper.toDto(updated);
+        return CompletableFuture.completedFuture(mapper.toDto(updated));
     }
 
+    @Async("taskExecutor")
     @Override
-    public void delete(Long id) {
+    public CompletableFuture<Void> delete(Long id) {
         repo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
         repo.deleteById(id);
+        return CompletableFuture.completedFuture(null);
     }
 }

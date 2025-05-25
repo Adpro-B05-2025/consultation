@@ -4,12 +4,13 @@ import id.ac.ui.cs.advprog.consultation.dto.ConsultationRequestDto;
 import id.ac.ui.cs.advprog.consultation.dto.ConsultationResponseDto;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface ConsultationService {
-    ConsultationResponseDto create(ConsultationRequestDto request);
-    ConsultationResponseDto getById(Long id);
-    List<ConsultationResponseDto> getByPatient(Long patientId);
-    List<ConsultationResponseDto> getByDoctor(Long doctorId);
-    ConsultationResponseDto updateStatus(Long id, String newStatus);
-    void delete(Long id);
+    CompletableFuture<ConsultationResponseDto> create(ConsultationRequestDto request);
+    CompletableFuture<ConsultationResponseDto> getById(Long id);
+    CompletableFuture<List<ConsultationResponseDto>> getByPatient(Long patientId);
+    CompletableFuture<List<ConsultationResponseDto>> getByDoctor(Long doctorId);
+    CompletableFuture<ConsultationResponseDto> updateStatus(Long id, String newStatus);
+    CompletableFuture<Void> delete(Long id);
 }
