@@ -10,4 +10,12 @@ public class ConsultationApplication {
         SpringApplication.run(ConsultationApplication.class, args);
     }
 
+    // Add a simple method for testing
+    public static String getAppName() {
+        return "ConsultationApplication";
+    }
+
+    public static String getAppVersion() {
+        return "1.0";
+    }
 }

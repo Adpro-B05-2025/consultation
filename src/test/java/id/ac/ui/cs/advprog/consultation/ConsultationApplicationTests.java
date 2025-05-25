@@ -10,4 +10,15 @@ class ConsultationApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void testGetAppName() {
+        String appName = ConsultationApplication.getAppName();
+        org.junit.jupiter.api.Assertions.assertEquals("ConsultationApplication", appName);
+    }
+
+    @Test
+    void testGetAppVersion() {
+        String version = ConsultationApplication.getAppVersion();
+        org.junit.jupiter.api.Assertions.assertEquals("1.0", version);
+    }
 }
