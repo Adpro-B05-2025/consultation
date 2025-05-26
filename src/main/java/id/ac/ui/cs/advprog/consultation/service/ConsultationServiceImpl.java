@@ -77,6 +77,7 @@ public class ConsultationServiceImpl implements ConsultationService {
     }
 
     @Override
+<<<<<<< HEAD
     public ConsultationResponseDto scheduleConsultation(Long id, String scheduledAt) {
         Consultation c = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Consultation", "id", id));
@@ -98,3 +99,12 @@ public class ConsultationServiceImpl implements ConsultationService {
                 .collect(Collectors.toList());
     }
 }
+=======
+    public List<ConsultationResponseDto> getAll() {
+        List<Consultation> allConsultations = repo.findAll();
+        return allConsultations.stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+    }
+}
+>>>>>>> 2e29ec9bc52a6308dfb174f03ed801fa11720164

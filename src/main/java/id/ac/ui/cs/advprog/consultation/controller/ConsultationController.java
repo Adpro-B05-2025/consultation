@@ -6,9 +6,20 @@ import id.ac.ui.cs.advprog.consultation.service.ConsultationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+<<<<<<< HEAD
 
 import java.util.List;
 
+=======
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+
+@CrossOrigin(origins = "http://localhost:3000")
+>>>>>>> 2e29ec9bc52a6308dfb174f03ed801fa11720164
 @RestController
 @RequestMapping("/api/consultations")
 @RequiredArgsConstructor
@@ -17,9 +28,31 @@ public class ConsultationController {
     private final ConsultationService service;
 
     @PostMapping
+<<<<<<< HEAD
     public ResponseEntity<ConsultationResponseDto> create(
             @RequestBody ConsultationRequestDto dto) {
         return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
+=======
+    public ResponseEntity<ConsultationResponseDto> create(@RequestBody ConsultationRequestDto dto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized: JWT token missing or invalid");
+        }
+
+        String userIdString = (String) auth.getPrincipal();
+        Long userId = Long.valueOf(userIdString);
+
+        dto.setPatientId(userId);
+
+        ConsultationResponseDto response = service.create(dto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public List<ConsultationResponseDto> getAll() {
+        return service.getAll();
+>>>>>>> 2e29ec9bc52a6308dfb174f03ed801fa11720164
     }
 
     @GetMapping("/{id}")
@@ -49,9 +82,12 @@ public class ConsultationController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+<<<<<<< HEAD
 
     @GetMapping
     public ResponseEntity<List<ConsultationResponseDto>> getAllConsultations() {
         return ResponseEntity.ok(service.getAllConsultations());
     }
+=======
+>>>>>>> 2e29ec9bc52a6308dfb174f03ed801fa11720164
 }
