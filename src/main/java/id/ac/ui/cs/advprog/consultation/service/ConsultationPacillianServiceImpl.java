@@ -3,7 +3,6 @@ package id.ac.ui.cs.advprog.consultation.service;
 import id.ac.ui.cs.advprog.consultation.dto.ConsultationRequestPacillianDto;
 import id.ac.ui.cs.advprog.consultation.dto.ConsultationResponsePacillianDto;
 import id.ac.ui.cs.advprog.consultation.entity.ConsultationPacillian;
-import id.ac.ui.cs.advprog.consultation.exception.BadRequestException;
 import id.ac.ui.cs.advprog.consultation.exception.ResourceNotFoundException;
 import id.ac.ui.cs.advprog.consultation.mapper.ConsultationPacillianMapper;
 import id.ac.ui.cs.advprog.consultation.repository.ConsultationPacillianRepository;
