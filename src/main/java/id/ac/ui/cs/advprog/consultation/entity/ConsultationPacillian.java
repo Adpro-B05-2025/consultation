@@ -12,22 +12,25 @@ import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "consultations")
+@Table(name = "consultation_request")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Consultation {
+public class ConsultationPacillian {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long patientId;  // foreign key ke Pacillian
-    private Long doctorId;   // foreign key ke CareGiver
+    private Long doctorId;
+
+    private Long patientId;
 
     private LocalDateTime requestedAt;
+
     private LocalDateTime scheduledAt;
 
     @Enumerated(EnumType.STRING)
-    private ConsultationStatus status;  // PENDING, APPROVED, REJECTED, COMPLETED
+    private ConsultationStatus status;
 
     private String meetingUrl;
+
     private String note;
 
     public enum ConsultationStatus {
@@ -36,5 +39,4 @@ public class Consultation {
         REJECTED,
         COMPLETED
     }
-
 }

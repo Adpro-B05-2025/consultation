@@ -1,8 +1,8 @@
 package id.ac.ui.cs.advprog.consultation.controller;
 
-import id.ac.ui.cs.advprog.consultation.dto.ConsultationRequestDto;
-import id.ac.ui.cs.advprog.consultation.dto.ConsultationResponseDto;
-import id.ac.ui.cs.advprog.consultation.service.ConsultationService;
+import id.ac.ui.cs.advprog.consultation.dto.ConsultationRequestPacillianDto;
+import id.ac.ui.cs.advprog.consultation.dto.ConsultationResponsePacillianDto;
+import id.ac.ui.cs.advprog.consultation.service.ConsultationPacillianService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +15,14 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/consultations")
+@RequestMapping("/api/consultation-pacillian")
 @RequiredArgsConstructor
-public class ConsultationController {
+public class ConsultationRequestController {
 
-    private final ConsultationService service;
+    private final ConsultationPacillianService service;
 
     @PostMapping
-    public ResponseEntity<ConsultationResponseDto> create(@RequestBody ConsultationRequestDto dto) {
+    public ResponseEntity<ConsultationResponsePacillianDto> create(@RequestBody ConsultationRequestPacillianDto dto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
@@ -34,40 +34,33 @@ public class ConsultationController {
 
         dto.setPatientId(userId);
 
-        ConsultationResponseDto response = service.create(dto);
+        ConsultationResponsePacillianDto response = service.createConsultation(dto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<ConsultationResponseDto> getAll() {
-        return service.getAll();
+    public List<ConsultationResponsePacillianDto> getAll() {
+        return service.getAllConsultation();
     }
 
     @GetMapping("/{id}")
-    public ConsultationResponseDto getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ConsultationResponsePacillianDto getById(@PathVariable Long id) {
+        return service.getConsultationById(id);
     }
 
     @GetMapping("/patient/{pid}")
-    public List<ConsultationResponseDto> byPatient(@PathVariable("pid") Long pid) {
-        return service.getByPatient(pid);
+    public List<ConsultationResponsePacillianDto> byPatient(@PathVariable("pid") Long pid) {
+        return service.getConsultationByPacillian(pid);
     }
 
     @GetMapping("/doctor/{did}")
-    public List<ConsultationResponseDto> byDoctor(@PathVariable("did") Long did) {
-        return service.getByDoctor(did);
-    }
-
-    @PutMapping("/{id}/status")
-    public ConsultationResponseDto changeStatus(
-            @PathVariable Long id,
-            @RequestParam String status) {
-        return service.updateStatus(id, status);
+    public List<ConsultationResponsePacillianDto> byDoctor(@PathVariable("did") Long did) {
+        return service.getConsultationByDoctor(did);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        service.deleteConsultation(id);
         return ResponseEntity.noContent().build();
     }
 }

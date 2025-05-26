@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConsultationResponseDto {
+public class ConsultationResponsePacillianDto {
     private Long id;
     private Long patientId;
     private Long doctorId;
