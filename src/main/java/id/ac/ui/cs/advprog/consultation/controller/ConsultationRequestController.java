@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:3000", "https://lucent-treacle-8937a6.netlify.app"}, allowCredentials = "true", maxAge = 3600)
 @RestController
 @RequestMapping("/api/consultation-pacillian")
 @RequiredArgsConstructor
